@@ -11,7 +11,8 @@ namespace lua {
 		LuaState luastate;
 
 		public Lua() {
-			luastate = LuaDll.lua_newstate(LuaDll.lua_getDefaultAlloc(), IntPtr.Zero);
+            var f = LuaDll.lua_getDefaultAlloc();
+			luastate = LuaDll.lua_newstate(f, IntPtr.Zero);
 		}
 
 		private Lua(LuaState luastate) {
@@ -25,12 +26,23 @@ namespace lua {
 
 		public void DoString(string str, string chunkname = "unnamed chunk") {
 
+            IntPtr chunk = IntPtr.Zero;
 			byte[] b = Encoding.UTF8.GetBytes(str);
-			IntPtr chunk = Marshal.AllocHGlobal(b.Length);
-			LuaDll.lua_load(luastate, (l, d, s) => {
-				return d;
-			}, chunk, chunkname);
-			Marshal.FreeHGlobal(chunk);
+            bool read = false;
+			chunk = Marshal.AllocHGlobal(b.Length);
+            Marshal.Copy(b, 0, chunk, b.Length);
+			var err = LuaDll.lua_load(luastate, (LuaState l, IntPtr d, ref int s) => {
+                if (read)
+                {
+                    Marshal.FreeHGlobal(d);
+                    s = 0;
+                    return IntPtr.Zero;
+                }
+                read = true;
+                s = b.Length;
+                return d;
+            }, chunk, chunkname);
+            LuaDll.lua_call(luastate, 0, 0);
 		}
 
 		class Marshaller {
@@ -84,7 +96,8 @@ namespace lua {
 				int n = LuaDll.lua_gettop(l);
 				List<object> parameters = new List<object>();
 				for (int i = 0; i < n; i++) {
-					parameters.Add(parameterReturner[LuaDll.lua_type(l, i)](l, i));
+                    LuaDll.TYPES t = paramTypeList[i];
+					parameters.Add(parameterReturner[t](l, i+1));
 				}
 				func.DynamicInvoke(parameters.ToArray());
 				return 0;

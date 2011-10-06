@@ -10,28 +10,35 @@ using size_t = System.Int32;
 
 namespace lua {
 	class LuaDll {
-
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate int lua_Writer(LuaState L, IntPtr p, size_t sz, IntPtr ud);
-		public delegate string lua_Reader(LuaState L, IntPtr ud, ref size_t sz);
-		public delegate IntPtr lua_Alloc(IntPtr ud, IntPtr ptr, int osize, int nsize);
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate IntPtr lua_Reader(LuaState L, IntPtr ud, ref size_t sz);
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate IntPtr lua_Alloc(IntPtr ud, IntPtr ptr, size_t osize, size_t nsize);
+        
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate int lua_CFunction(LuaState L);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern lua_Alloc lua_getDefaultAlloc();
 
 		/*
 		** state manipulation
 		*/
-		[DllImport("luanative.dll")]
-		public static extern LuaState lua_newstate(lua_Alloc f, IntPtr ud);
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
+        public static extern LuaState lua_newstate([MarshalAs(UnmanagedType.FunctionPtr)] lua_Alloc f, IntPtr ud);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_close(LuaState L);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern LuaState lua_newthread(LuaState L);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern lua_CFunction lua_atpanic(LuaState L, lua_CFunction panicf);
 
 
@@ -39,22 +46,22 @@ namespace lua {
 		** basic stack manipulation
 		*/
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_gettop(LuaState L);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_settop(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushvalue(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_remove(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_insert(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_replace(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_checkstack(LuaState L, int sz);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_xmove(LuaState from, LuaState to, int n);
 
 
@@ -62,133 +69,133 @@ namespace lua {
 		** access functions (stack -> C)
 		*/
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_isnumber(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_isstring(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_iscfunction(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_isuserdata(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern TYPES lua_type(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern string lua_typename(LuaState L, int tp);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_equal(LuaState L, int idx1, int idx2);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_rawequal(LuaState L, int idx1, int idx2);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_lessthan(LuaState L, int idx1, int idx2);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern lua_Number lua_tonumber(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern lua_Integer lua_tointeger(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_toboolean(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern string lua_tolstring(LuaState L, int idx, ref size_t len);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern size_t lua_objlen(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern lua_CFunction lua_tocfunction(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern IntPtr lua_touserdata(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern LuaState lua_tothread(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern IntPtr lua_topointer(LuaState L, int idx);
 
 
 		/*
 		** push functions (C -> stack)
 		*/
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushnil(LuaState L);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushnumber(LuaState L, lua_Number n);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushinteger(LuaState L, lua_Integer n);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushlstring(LuaState L, string s, size_t l);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushstring(LuaState L, string s);
-		//[DllImport("luanative.dll")]		public static extern  string lua_pushvfstring (LuaState L, const char *fmt, va_list argp);
-		//[DllImport("luanative.dll")]		public static extern  string lua_pushfstring (LuaState L, const char *fmt, ...);
-		[DllImport("luanative.dll")]
+		//[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]		public static extern  string lua_pushvfstring (LuaState L, const char *fmt, va_list argp);
+		//[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]		public static extern  string lua_pushfstring (LuaState L, const char *fmt, ...);
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushcclosure(LuaState L, lua_CFunction fn, int n);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushboolean(LuaState L, int b);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_pushlightuserdata(LuaState L, IntPtr p);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_pushthread(LuaState L);
 
 
 		/*
 		** get functions (Lua -> stack)
 		*/
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_gettable(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_getfield(LuaState L, int idx, string k);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_rawget(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_rawgeti(LuaState L, int idx, int n);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_createtable(LuaState L, int narr, int nrec);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern IntPtr lua_newuserdata(LuaState L, size_t sz);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_getmetatable(LuaState L, int objindex);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_getfenv(LuaState L, int idx);
 
 
 		/*
 		** set functions (stack -> Lua)
 		*/
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_settable(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_setfield(LuaState L, int idx, string k);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_rawset(LuaState L, int idx);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_rawseti(LuaState L, int idx, int n);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_setmetatable(LuaState L, int objindex);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_setfenv(LuaState L, int idx);
 
 
 		/*
 		** `load' and `call' functions (load and run Lua code)
 		*/
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_call(LuaState L, int nargs, int nresults);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_pcall(LuaState L, int nargs, int nresults, int errfunc);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_cpcall(LuaState L, lua_CFunction func, IntPtr ud);
-		[DllImport("luanative.dll")]
-		public static extern int lua_load(LuaState L, lua_Reader reader, IntPtr dt, string chunkname);
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
+        public static extern int lua_load(LuaState L, [MarshalAs(UnmanagedType.FunctionPtr)] lua_Reader reader, IntPtr dt, string chunkname);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_dump(LuaState L, lua_Writer writer, IntPtr data);
 
 
 		/*
 		** coroutine functions
 		*/
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_yield(LuaState L, int nresults);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_resume(LuaState L, int narg);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_status(LuaState L);
 
 		/*
@@ -220,7 +227,7 @@ namespace lua {
 			ERRERR = 5
 		}
 		
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_gc(LuaState L, GC what, int data);
 
 
@@ -228,18 +235,18 @@ namespace lua {
 		** miscellaneous functions
 		*/
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_error(LuaState L);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern int lua_next(LuaState L, int idx);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_concat(LuaState L, int n);
 
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern lua_Alloc lua_getallocf(LuaState L, ref IntPtr ud);
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_setallocf(LuaState L, lua_Alloc f, IntPtr ud);
 
 		public enum TYPES {
@@ -365,7 +372,7 @@ namespace lua {
 
 
 		/* hack */
-		[DllImport("luanative.dll")]
+		[DllImport("luanative.dll", CallingConvention=CallingConvention.Cdecl)]
 		public static extern void lua_setlevel(LuaState from, LuaState to);
 	}
 }

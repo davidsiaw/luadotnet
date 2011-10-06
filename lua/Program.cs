@@ -9,8 +9,8 @@ namespace lua {
 		
 
 		class Story {
-			public void DanSays(string a) {
-				Console.WriteLine("Dan Says: {0}", a);
+			public void DanSays(string a, string b) {
+				Console.WriteLine("Dan Says: {0} {1}", a, b);
 			}
 
 			public void ThorSays(string a) {
@@ -24,6 +24,20 @@ namespace lua {
 			Story s = new Story();
 
 			Lua l = new Lua();
+            l.Register("DanSays", new Action<string,string>(s.DanSays));
+            l.Register("ThorSays", new Action<string>(s.ThorSays));
+
+            string a = @"
+function haha ()
+    ThorSays('hahaha');
+end
+
+for v = 1,2 do
+DanSays('lolol',v);
+haha();
+end
+";
+            l.DoString(a);
 
 			Console.ReadKey();
 		}
