@@ -7,39 +7,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luanative", "luanative\luan
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Debug|Mixed Platforms = Debug|Mixed Platforms
-		Debug|Win32 = Debug|Win32
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
-		Release|Mixed Platforms = Release|Mixed Platforms
-		Release|Win32 = Release|Win32
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Debug|Win32.ActiveCfg = Debug|x86
 		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Debug|x86.ActiveCfg = Debug|x86
 		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Debug|x86.Build.0 = Debug|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Release|Any CPU.ActiveCfg = Release|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Release|Mixed Platforms.Build.0 = Release|x86
-		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Release|Win32.ActiveCfg = Release|x86
 		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Release|x86.ActiveCfg = Release|x86
 		{C3C0F422-9927-4754-8CBF-0E1EF8CD4DC2}.Release|x86.Build.0 = Release|x86
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|Win32.ActiveCfg = Debug|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|Win32.Build.0 = Debug|Win32
 		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|x86.ActiveCfg = Debug|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Release|Any CPU.ActiveCfg = Release|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Release|Win32.ActiveCfg = Release|Win32
-		{72395C50-D380-478B-81C7-67E565B85DC7}.Release|Win32.Build.0 = Release|Win32
+		{72395C50-D380-478B-81C7-67E565B85DC7}.Debug|x86.Build.0 = Debug|Win32
 		{72395C50-D380-478B-81C7-67E565B85DC7}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

@@ -1,0 +1,6 @@
+C:\Experiments\lua\lua\bin\Debug\lua.exe
+C:\Experiments\lua\lua\bin\Debug\lua.pdb
+C:\Experiments\lua\lua\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Experiments\lua\lua\obj\x86\Debug\lua.exe
+C:\Experiments\lua\lua\obj\x86\Debug\lua.pdb
+C:\Experiments\lua\lua\bin\Debug\luanative.dll

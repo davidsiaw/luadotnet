@@ -21,6 +21,9 @@ namespace lua {
 
 		static void Main(string[] args) {
 
+			Story s = new Story();
+
+			Lua l = new Lua();
 
 			Console.ReadKey();
 		}

@@ -71,7 +71,7 @@ namespace lua {
 		[DllImport("luanative.dll")]
 		public static extern int lua_isuserdata(LuaState L, int idx);
 		[DllImport("luanative.dll")]
-		public static extern int lua_type(LuaState L, int idx);
+		public static extern TYPES lua_type(LuaState L, int idx);
 		[DllImport("luanative.dll")]
 		public static extern string lua_typename(LuaState L, int tp);
 
@@ -207,17 +207,17 @@ namespace lua {
 		}
 
 		public enum PSEUDOINDICES : int{
-			LUA_REGISTRYINDEX = (-10000),
-			LUA_ENVIRONINDEX = (-10001),
-			LUA_GLOBALSINDEX = (-10002)
+			REGISTRYINDEX = (-10000),
+			ENVIRONINDEX = (-10001),
+			GLOBALSINDEX = (-10002)
 		}
 
 		public enum THREADSTATUS : int {
-			LUA_YIELD = 1,
-			LUA_ERRRUN = 2,
-			LUA_ERRSYNTAX = 3,
-			LUA_ERRMEM = 4,
-			LUA_ERRERR = 5
+			YIELD = 1,
+			ERRRUN = 2,
+			ERRSYNTAX = 3,
+			ERRMEM = 4,
+			ERRERR = 5
 		}
 		
 		[DllImport("luanative.dll")]
@@ -244,7 +244,6 @@ namespace lua {
 
 		public enum TYPES {
 			NONE = (-1),
-
 			NIL = 0,
 			BOOLEAN = 1,
 			LIGHTUSERDATA = 2,
@@ -263,89 +262,89 @@ namespace lua {
 		//*/
 
 		//#define lua_pop(L,n)		lua_settop(L, -(n)-1)
-		public void lua_pop(LuaState L, int n) {
+		public static void lua_pop(LuaState L, int n) {
 			lua_settop(L, -n - 1);
 		}
 
 		//#define lua_newtable(L)		lua_createtable(L, 0, 0)
-		public void lua_newtable(LuaState L) {
+		public static void lua_newtable(LuaState L) {
 			lua_createtable(L, 0, 0);
 		}
 
 		//#define lua_register(L,n,f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
-		public void lua_register(LuaState L, string n, lua_CFunction f) {
+		public static void lua_register(LuaState L, string n, lua_CFunction f) {
 			lua_pushcfunction(L, f);
 			lua_setglobal(L, n);
 		}
 
 		//#define lua_pushcfunction(L,f)	lua_pushcclosure(L, (f), 0)
-		public void lua_pushcfunction(LuaState L, lua_CFunction f) {
+		public static void lua_pushcfunction(LuaState L, lua_CFunction f) {
 			lua_pushcclosure(L, f, 0);
 		}
 
 		//#define lua_strlen(L,i)		lua_objlen(L, (i))
-		public size_t lua_strlen(LuaState L, int i) {
+		public static size_t lua_strlen(LuaState L, int i) {
 			return lua_objlen(L, i);
 		}
 
 		//#define lua_isfunction(L,n)	(lua_type(L, (n)) == LUA_TFUNCTION)
-		public bool lua_isfunction(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.FUNCTION;
+		public static bool lua_isfunction(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.FUNCTION;
 		}
 
 		//#define lua_istable(L,n)	(lua_type(L, (n)) == LUA_TTABLE)
-		public bool lua_istable(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.TABLE;
+		public static bool lua_istable(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.TABLE;
 		}
 
 		//#define lua_islightuserdata(L,n)	(lua_type(L, (n)) == LUA_TLIGHTUSERDATA)
-		public bool lua_islightuserdata(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.LIGHTUSERDATA;
+		public static bool lua_islightuserdata(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.LIGHTUSERDATA;
 		}
 
 		//#define lua_isnil(L,n)		(lua_type(L, (n)) == LUA_TNIL)
-		public bool lua_isnil(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.NIL;
+		public static bool lua_isnil(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.NIL;
 		}
 
 		//#define lua_isboolean(L,n)	(lua_type(L, (n)) == LUA_TBOOLEAN)
-		public bool lua_isboolean(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.BOOLEAN;
+		public static bool lua_isboolean(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.BOOLEAN;
 		}
 
 		//#define lua_isthread(L,n)	(lua_type(L, (n)) == LUA_TTHREAD)
-		public bool lua_isthread(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.THREAD;
+		public static bool lua_isthread(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.THREAD;
 		}
 
 		//#define lua_isnone(L,n)		(lua_type(L, (n)) == LUA_TNONE)
-		public bool lua_isnone(LuaState L, size_t n) {
-			return lua_type(L, n) == (size_t)TYPES.NONE;
+		public static bool lua_isnone(LuaState L, size_t n) {
+			return lua_type(L, n) == TYPES.NONE;
 		}
 
 		//#define lua_isnoneornil(L, n)	(lua_type(L, (n)) <= 0)
-		public bool lua_isnoneornil(LuaState L, size_t n) {
+		public static bool lua_isnoneornil(LuaState L, size_t n) {
 			return lua_type(L, n) <= 0;
 		}
 
 		//#define lua_pushliteral(L, s)	\
 		//    lua_pushlstring(L, "" s, (sizeof(s)/sizeof(char))-1)
-		public void lua_pushliteral(LuaState L, string s) {
+		public static void lua_pushliteral(LuaState L, string s) {
 			lua_pushlstring(L, s, s.Length);
 		}
 
 		//#define lua_setglobal(L,s)	lua_setfield(L, LUA_GLOBALSINDEX, (s))
-		void lua_setglobal(LuaState L, string s) {
-			lua_setfield(L, (int)PSEUDOINDICES.LUA_GLOBALSINDEX, s);
+		public static void lua_setglobal(LuaState L, string s) {
+			lua_setfield(L, (int)PSEUDOINDICES.GLOBALSINDEX, s);
 		}
 
 		//#define lua_getglobal(L,s)	lua_getfield(L, LUA_GLOBALSINDEX, (s))
-		void lua_getglobal(LuaState L, string s) {
-			lua_getfield(L, (int)PSEUDOINDICES.LUA_GLOBALSINDEX, s);
+		public static void lua_getglobal(LuaState L, string s) {
+			lua_getfield(L, (int)PSEUDOINDICES.GLOBALSINDEX, s);
 		}
 
 		//#define lua_tostring(L,i)	lua_tolstring(L, (i), NULL)
-		void lua_tostring(LuaState L, size_t i) {
+		public static void lua_tostring(LuaState L, size_t i) {
 			lua_tostring(L, i);
 		}
 
