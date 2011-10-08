@@ -58,10 +58,13 @@ HarrySays('meow',1,2,3,4);
             var scr = l.LoadScript(a);
 
             scr.Start();
+            Console.ReadKey();
+
+            scr.Start();
+            Console.ReadKey();
 
             scr.Start();
 
-            scr.Start();
 
             Console.ReadKey();
         }

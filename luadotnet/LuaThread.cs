@@ -7,7 +7,9 @@ using LuaState = System.IntPtr;
 
 namespace luadotnet
 {
-
+    /// <summary>
+    /// Make an instance of this using Lua.LoadScript
+    /// </summary>
     public class LuaThread : IDisposable
     {
         byte[] b;
@@ -41,21 +43,25 @@ namespace luadotnet
             return chunk;
         }
 
+        /// <summary>
+        /// Start or resume execution
+        /// </summary>
         public void Resume()
         {
             Start();
         }
 
+        /// <summary>
+        /// Start or resume execution
+        /// </summary>
         public void Start()
         {
             LuaDll.lua_resume(luastate, 0);
         }
 
-        public int Pause()
-        {
-            return LuaDll.lua_yield(luastate, 0);
-        }
-
+        /// <summary>
+        /// Close this thread
+        /// </summary>
         public void Dispose()
         {
             Marshal.FreeHGlobal(chunk);
