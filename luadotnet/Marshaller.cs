@@ -41,7 +41,17 @@ namespace luadotnet
                 parameterPusher[LuaDll.TYPES.STRING] = (l, o) => LuaDll.lua_pushstring(l, o.ToString());
                 parameterPusher[LuaDll.TYPES.FUNCTION] = (l, o) => LuaDll.lua_pushcfunction(l, new Marshaller((Delegate)o).InvokeFromLua);
                 parameterPusher[LuaDll.TYPES.THREAD] = (l, o) => LuaDll.lua_pushthread(((LuaThread)o).luastate);
-               
+                parameterPusher[LuaDll.TYPES.TABLE] = (l, i) =>
+                {
+                    Dictionary<object, object> dict = (Dictionary<object, object>)i;
+                    LuaDll.lua_createtable(l, 0, dict.Count);
+                    foreach (var kvpair in dict)
+                    {
+                        parameterPusher[GetLuaType(kvpair.Key.GetType())](l, kvpair.Key);
+                        parameterPusher[GetLuaType(kvpair.Value.GetType())](l, kvpair.Value);
+                        LuaDll.lua_settable(l, -3);
+                    }
+                };
                 parameterPusher[LuaDll.TYPES.NIL] = (l, i) => { };
                 parameterPusher[LuaDll.TYPES.NONE] = (l, i) => { };
             }

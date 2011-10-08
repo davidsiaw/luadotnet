@@ -29,6 +29,11 @@ namespace lua
                 }
             }
 
+            public void SendTable(Dictionary<object,object> dict)
+            {
+
+            }
+
             public string GetSome()
             {
                 return "getsome";
@@ -45,6 +50,7 @@ namespace lua
             l.Register("DanSays", new Action<string, string>(s.DanSays));
             l.RegisterBlocking("ThorSays", new Action<string>(s.ThorSays));
             l.Register("HarrySays", new Action<string, string[]>(s.HarrySays));
+            l.RegisterBlocking("SendTable", new Action<Dictionary<object, object>>(s.SendTable));
 
             string a = @"
 function haha ()
@@ -57,6 +63,11 @@ haha();
 end
 
 HarrySays('meow',1,2,3,4);
+
+t={};
+t['meow'] = 4;
+t[2] = 5;
+SendTable(t);
 ";
 
             var scr = l.LoadScript(a);
