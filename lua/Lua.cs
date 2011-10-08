@@ -24,7 +24,7 @@ namespace lua {
 			LuaDll.lua_register(luastate, name, m.InvokeFromLua);
 		}
 
-		public void DoString(string str, string chunkname = "unnamed chunk") {
+		public void DoScript(string str, string chunkname = "unnamed chunk") {
 
             IntPtr chunk = IntPtr.Zero;
 			byte[] b = Encoding.UTF8.GetBytes(str);
@@ -44,6 +44,10 @@ namespace lua {
             }, chunk, chunkname);
             LuaDll.lua_call(luastate, 0, 0);
 		}
+
+        public void LoadScript(string str)
+        {
+        }
 
 		class Marshaller {
 			static Dictionary<LuaDll.TYPES, Func<LuaState, int, object>> parameterReturner = new Dictionary<LuaDll.TYPES, Func<LuaState, int, object>>();

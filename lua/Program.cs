@@ -37,7 +37,7 @@ DanSays('lolol',v);
 haha();
 end
 ";
-            l.DoString(a);
+            l.DoScript(a);
 
 			Console.ReadKey();
 		}
