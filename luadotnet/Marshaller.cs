@@ -10,6 +10,7 @@ namespace luadotnet
      class Marshaller
         {
             static Dictionary<LuaDll.TYPES, Func<LuaState, int, object>> parameterReturner = new Dictionary<LuaDll.TYPES, Func<LuaState, int, object>>();
+            static Dictionary<LuaDll.TYPES, Action<LuaState, object>> parameterPusher = new Dictionary<LuaDll.TYPES, Action<LuaState, object>>();
 
             static Marshaller()
             {
@@ -33,6 +34,16 @@ namespace luadotnet
                 };
                 parameterReturner[LuaDll.TYPES.NIL] = (l, i) => null;
                 parameterReturner[LuaDll.TYPES.NONE] = (l, i) => null;
+
+
+                parameterPusher[LuaDll.TYPES.NUMBER] = (l, o) => LuaDll.lua_pushnumber(l, (double)o);
+                parameterPusher[LuaDll.TYPES.BOOLEAN] = (l, o) => LuaDll.lua_pushboolean(l, ((bool)o) ? 1 : 0);
+                parameterPusher[LuaDll.TYPES.STRING] = (l, o) => LuaDll.lua_pushstring(l, o.ToString());
+                parameterPusher[LuaDll.TYPES.FUNCTION] = (l, o) => LuaDll.lua_pushcfunction(l, new Marshaller((Delegate)o).InvokeFromLua);
+                parameterPusher[LuaDll.TYPES.THREAD] = (l, o) => LuaDll.lua_pushthread(((LuaThread)o).luastate);
+               
+                parameterPusher[LuaDll.TYPES.NIL] = (l, i) => { };
+                parameterPusher[LuaDll.TYPES.NONE] = (l, i) => { };
             }
             
             public enum FunctionType{
@@ -45,6 +56,7 @@ namespace luadotnet
             LuaDll.TYPES varlistType;
             Type intvarlistType;
             FunctionType fnType;
+            LuaDll.TYPES returnType;
 
             public Marshaller(Delegate func, FunctionType type = FunctionType.NONBLOCKING)
             {
@@ -62,12 +74,12 @@ namespace luadotnet
 
                     return GetLuaType(x.ParameterType);
                 }).ToArray();
-
+                returnType = GetLuaType(func.Method.ReturnType);
             }
 
             private static LuaDll.TYPES GetLuaType(Type x)
             {
-                if (x == typeof(int))
+                if (x == typeof(double))
                 {
                     return LuaDll.TYPES.NUMBER;
                 }
@@ -87,9 +99,13 @@ namespace luadotnet
                 {
                     return LuaDll.TYPES.TABLE;
                 }
-                else if (x == typeof(Lua))
+                else if (x == typeof(LuaThread))
                 {
                     return LuaDll.TYPES.THREAD;
+                }
+                else if (x == typeof(void))
+                {
+                    return LuaDll.TYPES.NONE;
                 }
                 else
                 {
@@ -124,10 +140,18 @@ namespace luadotnet
                         parameters.Add(parameterReturner[t](l, i + 1));
                     }
                 }
-                func.DynamicInvoke(parameters.ToArray());
+                object retval = func.DynamicInvoke(parameters.ToArray());
                 if (fnType == FunctionType.NONBLOCKING)
                 {
-                    return 0;
+                    if (returnType == LuaDll.TYPES.NONE)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        parameterPusher[returnType](l, retval);
+                        return 1;
+                    }
                 }
                 return LuaDll.lua_yield(l, 0);
             }

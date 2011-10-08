@@ -15,7 +15,7 @@ namespace luadotnet
         byte[] b;
         IntPtr chunk = IntPtr.Zero;
         bool read = false;
-        LuaState luastate;
+        internal readonly LuaState luastate;
         internal LuaThread(LuaState luastate, string str, string chunkname = "unnamed thread")
         {
             this.luastate = luastate;

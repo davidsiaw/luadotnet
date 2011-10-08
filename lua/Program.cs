@@ -9,8 +9,6 @@ namespace lua
     class Program
     {
 
-
-
         class Story
         {
             public void DanSays(string a, string b)
@@ -30,8 +28,12 @@ namespace lua
                     Console.WriteLine("Harry Says: {0}", s);
                 }
             }
-        }
 
+            public string GetSome()
+            {
+                return "getsome";
+            }
+        }
 
         static void Main(string[] args)
         {
@@ -39,6 +41,7 @@ namespace lua
             Story s = new Story();
 
             Lua l = new Lua();
+            l.Register("GetSome", new Func<string>(s.GetSome));
             l.Register("DanSays", new Action<string, string>(s.DanSays));
             l.RegisterBlocking("ThorSays", new Action<string>(s.ThorSays));
             l.Register("HarrySays", new Action<string, string[]>(s.HarrySays));
@@ -49,12 +52,13 @@ function haha ()
 end
 
 for v = 1,2 do
-DanSays('lolol',v);
+DanSays('lolol',GetSome());
 haha();
 end
 
 HarrySays('meow',1,2,3,4);
 ";
+
             var scr = l.LoadScript(a);
 
             scr.Start();
@@ -64,8 +68,6 @@ HarrySays('meow',1,2,3,4);
             Console.ReadKey();
 
             scr.Start();
-
-
             Console.ReadKey();
         }
     }
