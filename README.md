@@ -11,7 +11,9 @@ This interface allows you to very easily register a function to be called from L
 
 You can't register a function that passes values with ref or out at the moment and it only permits these kinds of parameters and return types:
 
+```c#
 string, double, bool, a function, Dictionary<object,object> and LuaThread
+```
 
 In the future I may add returning arrays and it will enable us to return more than one thing to Lua.
 
