@@ -22,20 +22,26 @@ Simple examples:
 
 ----------------------------------------------------
 
-    Lua l = new Lua();
-    l.Register("print", new Action<string>(x=>Console.WriteLine(x)));
+```c#
+Lua l = new Lua();
+l.Register("print", new Action<string>(x=>Console.WriteLine(x)));
+```
 
 registers a function that takes a string and prints it!
 
 ----------------------------------------------------
 
-    LuaScript ls = l.LoadScript("print('haha');");
+```c#
+LuaScript ls = l.LoadScript("print('haha');");
+```
 
 loads up a small script that just prints "haha" to the screen
 
 ----------------------------------------------------
 
-    ls.Start();
+```c#
+ls.Start();
+```
 
 runs the script!
 
